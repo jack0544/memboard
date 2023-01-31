@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql문을 작성해주는 곳 -->
+<mapper namespace="com.icia.memboard.dao.CDAO">
+	
+	<select id="cList" parameterType="int" resultType="comment">
+		SELECT * FROM COMMENTS WHERE CBNUM = #{cbNum}
+	</select>
+	
+	<insert id="cmtWrite" parameterType="comment">
+		INSERT INTO COMMENTS VALUES(CMT_SEQ.NEXTVAL, #{cbNum}, #{cmtWriter}, #{cmtContent}, SYSDATE)
+	</insert>
+	
+	<delete id="cmtDelete" parameterType="comment">
+		DELETE FROM COMMENTS WHERE CBNUM = #{cbNum} AND  CMTNUM = #{cmtNum}
+	</delete>
+
+	<delete id="cmtDelete1" parameterType="int">
+		DELETE FROM COMMENTS WHERE CBNUM = #{cbNum}
+	</delete>
+	
+	<update id="cmtModify" parameterType="comment"> 
+	UPDATE COMMENTS SET CMTCONTENT = #{cmtContent} WHERE CBNUM = #{cbNum} AND CMTNUM = #{cmtNum}
+	</update>
+
+	
+</mapper>

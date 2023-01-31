@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql문을 작성해주는 곳 -->
+<mapper namespace="com.icia.memboard.dao.MDAO">
+	
+	<!-- 아이디 중복체크 -->
+	<select id="mCheckId" parameterType="String" resultType="String">
+		SELECT
+		MEMID FROM MEMBER WHERE MEMID = #{memId}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="mJoin" parameterType="member">
+		INSERT INTO MEMBER VALUES(#{memId}, #{memPw}, #{memName}, #{memBirth}, #{memGender},
+		#{memEmail}, #{memPhone}, #{memAddr}, #{memProfileName})
+
+	</insert>
+		
+	<!-- 로그인 -->	
+	<select id="mLogin" parameterType="member" resultType="String">
+		SELECT MEMPW FROM MEMBER WHERE MEMID = #{memId}
+	</select>
+	
+		<!-- 게시글 개수 확인 -->
+	<select id="mCount" resultType="int">
+		SELECT COUNT(*) FROM MEMBER
+	</select>
+	
+		<!-- 페이징 처리 -->
+	<select id="mList" parameterType="paging" resultType="member">
+		SELECT * FROM MEMBERLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+<!-- 	<select id="mSearchName" parameterType="search" resultType="member">
+		SELECT * FROM MEMBERLIST WHERE MEMNAME LIKE '%'||#{keyword} ||'%'
+	</select>
+
+	<select id="mSearchId" parameterType="search" resultType="member">
+		SELECT * FROM MEMBERLIST WHERE MEMID LIKE '%'||#{keyword} ||'%'
+	</select>
+
+	<select id="mSearchPhone" parameterType="search" resultType="member">
+		SELECT * FROM MEMBERLIST WHERE MEMPHONE LIKE '%'||#{keyword} ||'%'
+	</select> -->
+	
+	<select id="mSearch" parameterType="search" resultType="member">
+		SELECT * FROM MEMBER WHERE ${category} LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<!-- 
+		'%'||#{keyword}||'%' => ||'입력한 값'||'%' => '%입력한값%'
+	 -->
+	
+	<select id="mView" parameterType="String" resultType="member">
+		SELECT * FROM MEMBER WHERE MEMID = #{memId}
+	</select>
+	
+	<update id="mModify" parameterType="member">
+		UPDATE MEMBER SET MEMPW = #{memPw} , MEMNAME = #{memName} , MEMBIRTH = #{memBirth}, MEMGENDER = #{memGender}, MEMEMAIL = #{memEmail}, MEMPHONE = #{memPhone}, MEMADDR = #{memAddr}, MEMPROFILENAME = #{memProfileName}
+		WHERE MEMID = #{memId}
+	</update>
+	
+	<delete id="mDelete" parameterType="String">
+		DELETE FROM MEMBER WHERE MEMID = #{memId}
+	</delete>
+
+	<select id="mList1" resultType="member">
+		SELECT * FROM MEMBER
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

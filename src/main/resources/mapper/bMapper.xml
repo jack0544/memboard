@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql문을 작성해주는 곳 -->
+<mapper namespace="com.icia.memboard.dao.BDAO">
+	
+	<insert id="bWrite" parameterType="board">
+		INSERT INTO BOARD VALUES(BO_SEQ.NEXTVAL, #{boWriter}, #{boTitle}, #{boContent}, SYSDATE, 0, #{boFileName})
+	</insert>
+	
+	<!-- 게시글 개수 확인 -->
+	<select id="bCount" resultType="int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	
+	<!--  조회수 증가  -->
+	<update id="boHit" parameterType="int"> 
+	UPDATE BOARD SET BOHIT = BOHIT + 1 WHERE BONUM = #{boNum} 
+	</update>
+	
+	
+		<!-- 페이징 처리 -->
+	<select id="bList" parameterType="paging" resultType="board">
+		SELECT * FROM BOARDLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="bView" parameterType="int" resultType="board">
+		SELECT * FROM BOARD WHERE BONUM = #{boNum}
+	</select>
+	
+		<!-- 게시판 수정 -->
+	<update id="bModify" parameterType="board">
+		UPDATE BOARD SET BOWRITER = #{boWriter}, BOTITLE = #{boTitle}, 
+		BOCONTENT = #{boContent}, BOFILENAME = #{boFileName, jdbcType=VARCHAR}
+		 WHERE BONUM = #{boNum}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="bDelete" parameterType="int">
+		DELETE FROM BOARD WHERE BONUM = #{boNum}
+	</delete>
+	
+</mapper>
